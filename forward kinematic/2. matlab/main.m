@@ -49,7 +49,10 @@ q4=q4_0;
 
 %%%%% 
 dt = pi/50;
-t_max = pi;
+t_max = 0.63*pi;
+
+d_dist = 0.1;
+dist_max = 1;
 
 for t=0:dt:t_max
     [Ed,dEd]=Quydao(t);
@@ -105,54 +108,48 @@ for t=0:dt:t_max
     ylabel('Y(m)');
     zlabel('Z(m)');
     
-    %diem A 
-    x1=0;
-    y1=0;
-    z1=0;
-    plot3(x1,y1,z1,'b.',0,0,0,'r.')
-    grid on
-    hold on
-    %diem B 
-    for t_q2 = 0:0.05:1
+    for t_q = 0:d_dist:dist_max
+        % diem O
+        x1=0;
+        y1=0;
+        z1=0;
+
+        % diem A
         xA=0;
         yA=0;
-        zA=L1+q2*t_q2;
+        zA=L1+q2*t_q;
         
         xOA = 0;
         yOA = 0;
         zOA = L1+q2;
-        plot3(xA,yA,zA,'g.',xOA,yOA,zOA,'r.')
-        grid on
-        hold on
-    end
-    %diem C
-    for t_q3 = 0:0.05:1
-        xB = L2 * cos(q1) * t_q3;
-        yB = L2 * sin(q1) * t_q3;
-        zB = L1+q2 * t_q3;
+
+        % diem B
+        xB = L2 * cos(q1) * t_q;
+        yB = L2 * sin(q1) * t_q;
+        zB = L1+q2 * t_q;
         
         xOB = L2 * cos(q1);
         yOB = L2 * sin(q1);
         zOB = L1+q2;
-        plot3(xB,yB,zB,'c.',xOB,yOB,zOB,'r.')
-        grid on 
-        hold on 
-    end
-    %diem D
-    for t_q4 = 0:0.05:1
-        xC = (cos(q1)*L3*cos(q3) - sin(q1)*L3*sin(q3)) * t_q4 + xOB;
-        yC = (sin(q1)*L3*cos(q3) + cos(q1)*L3*sin(q3)) * t_q4 + yOB;
-        zC = L1+q2 * t_q4;
+
+        % diem C
+        xC = (cos(q1)*L3*cos(q3) - sin(q1)*L3*sin(q3)) * t_q + xOB;
+        yC = (sin(q1)*L3*cos(q3) + cos(q1)*L3*sin(q3)) * t_q + yOB;
+        zC = L1+q2 * t_q;
         
         xOC = cos(q1)*L3*cos(q3) - sin(q1)*L3*sin(q3) + L2 * cos(q1);
         yOC = sin(q1)*L3*cos(q3) + cos(q1)*L3*sin(q3) + L2 * sin(q1);
         zOC = L1+q2;
-        plot3(xC,yC,zC,'b.',xOC,yOC,zOC,'r.')
+        
+        % Visualization
+        plot3(x1,y1,z1,'b.',0,0,0,'r.',xA,yA,zA,'g.',xOA,yOA,zOA,'r.',xB,yB,zB,'c.',xOB,yOB,zOB,'r.',xC,yC,zC,'b.',xOC,yOC,zOC,'r.')
         grid on
         hold on
     end
+
     %diem E 
-    for t_q5 = 0:0.05:1
+    for t_q5 = 0:d_dist:dist_max
+        % diem E
         xE = ((cos(q1) * cos(q3) - sin(q1) * sin(q3)) * L4 * cos(q4) + (-cos(q1) * sin(q3) - sin(q1) * cos(q3)) * L4 * sin(q4))*t_q5 + xOC;
         yE = ((sin(q1) * cos(q3) + cos(q1) * sin(q3)) * L4 * cos(q4) + (cos(q1) * cos(q3) - sin(q1) * sin(q3)) * L4 * sin(q4))*t_q5 + yOC;
         zE = L1+q2 * t_q5;

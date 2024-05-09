@@ -19,15 +19,15 @@
 #define swLimit3 10
 
 //------------ STEP 4 - A ------------
-#define stepL4 12    // dây động cơ bên phải
-#define dirL4 13     // dây động cơ bên phải
-#define swLimit4 A3
+#define stepLA 12    // dây động cơ bên phải
+#define dirLA 13     // dây động cơ bên phải
+#define swLimitA A3
 
 const int step[N] = {stepL1, stepL2, stepL3};        // list chân step
 const int dir[N] = {dirL1, dirL2, dirL3};           // list chân dir
 const int swLimit[N] = {swLimit1, swLimit2, swLimit3}; // list công tắc hành trình
-int accel[N];                                // Gia tốc của động cơ
-long degToGo[N];                             // Số góc nhập vào
+int accel[N], accelA;                                // Gia tốc của động cơ
+long degToGo[N], degToGoA;                             // Số góc nhập vào
 
 //#define numLine 1
 #define numDeg 88*2
@@ -135,11 +135,11 @@ long index = 0; //chỉ số chạy mảng nhập sẵn
 #define MAXSPEED 5000 // Vận tốc lớn nhất động cơ có thể đạt được
 #define MAXACCEL 500  // Gia tốc lớn nhất động cơ có thể đạt được
 
-long stepToGo[N];                            // Số bước cần di chuyển
-#define degHome1 -400                           // số góc từ công tắc hành trình về giữa
+long stepToGo[N], stepToGoA;                            // Số bước cần di chuyển
+#define degHome1 -800                           // số góc từ công tắc hành trình về giữa
 #define degHome2 0                          // số góc từ công tắc hành trình về giữa
-#define degHome3 -5555
-#define degHome4 -1600                          // số góc từ công tắc hành trình về giữa
+#define degHome3 -5800
+#define degHomeA -1600                          // số góc từ công tắc hành trình về giữa
 // #define degHome3 -94* microStep * ratioPuley3 / 1.8                           // số góc từ công tắc hành trình về giữa
 
 //-------------------------------- RC SERVO --------------------------------

@@ -35,15 +35,15 @@ void setup()
 
   stepper_X.setMaxSpeed(2000);
   stepper_X.setAcceleration(1000);
-  stepper_X.moveTo(1600);
+  stepper_X.moveTo(800);
 
   stepper_Y.setMaxSpeed(2000);
   stepper_Y.setAcceleration(1000);
-  stepper_Y.moveTo(3200);
+  stepper_Y.moveTo(800);
 
   stepper_Z.setMaxSpeed(5000);
   stepper_Z.setAcceleration(1000);
-  stepper_Z.moveTo(8000);
+  stepper_Z.moveTo(800);
 
   stepper_A.setMaxSpeed(2000);
   stepper_A.setAcceleration(1000);
@@ -57,7 +57,7 @@ void setup()
 
 void loop()
 {
-  // stepper_X.run();
+  stepper_X.run();
   stepper_Y.run();
   stepper_Z.run();
   stepper_A.run();

@@ -48,8 +48,11 @@ q3=q3_0;
 q4=q4_0;
 
 %%%%% 
-dt = 0.1;
-t_max = 8;
+dt = pi/50;
+t_max = 0.63*pi;
+
+d_dist = 0.1;
+dist_max = 1;
 
 for t=0:dt:t_max
     [Ed,dEd]=Quydao(t);
@@ -105,15 +108,19 @@ for t=0:dt:t_max
     ylabel('Y(m)');
     zlabel('Z(m)');
     
-    %diem A 
-    x1=0;
-    y1=0;
-    z1=0;
-    plot3(x1,y1,z1,'b.',0,0,0,'r.')
-    grid on
-    hold on
-    %diem B 
-    for t_q2 = 0:0.05:1
+    for t_q = 0:d_dist:dist_max
+        % diem O
+        x1=0;
+        y1=0;
+        z1=0;
+
+        % diem A
+        plot3(x1,y1,z1,'b.',0,0,0,'r.')
+        grid on
+        hold off
+    end
+    %diem A
+    for t_q2 = 0:d_dist:dist_max
         xA=0;
         yA=0;
         zA=L1+q2*t_q2;
@@ -123,10 +130,10 @@ for t=0:dt:t_max
         zOA = L1+q2;
         plot3(xA,yA,zA,'g.',xOA,yOA,zOA,'r.')
         grid on
-        hold on
+        hold off
     end
-    %diem C
-    for t_q3 = 0:0.05:1
+    %diem B
+    for t_q3 = 0:d_dist:dist_max
         xB = L2 * cos(q1) * t_q3;
         yB = L2 * sin(q1) * t_q3;
         zB = L1+q2 * t_q3;
@@ -136,34 +143,32 @@ for t=0:dt:t_max
         zOB = L1+q2;
         plot3(xB,yB,zB,'c.',xOB,yOB,zOB,'r.')
         grid on 
-        hold on 
+        hold off
     end
-    %diem D
-    for t_q4 = 0:0.05:1
+    %diem C
+    for t_q4 = 0:d_dist:dist_max
         xC = (cos(q1)*L3*cos(q3) - sin(q1)*L3*sin(q3)) * t_q4 + xOB;
         yC = (sin(q1)*L3*cos(q3) + cos(q1)*L3*sin(q3)) * t_q4 + yOB;
-        zC = L1;
+        zC = L1+q2 * t_q4;
         
         xOC = cos(q1)*L3*cos(q3) - sin(q1)*L3*sin(q3) + L2 * cos(q1);
         yOC = sin(q1)*L3*cos(q3) + cos(q1)*L3*sin(q3) + L2 * sin(q1);
-        zOC = L1;
+        zOC = L1+q2;
         plot3(xC,yC,zC,'b.',xOC,yOC,zOC,'r.')
+        grid on
+        hold off
+    end
+    %diem E 
+    for t_q5 = 0:d_dist:dist_max
+        xE = ((cos(q1) * cos(q3) - sin(q1) * sin(q3)) * L4 * cos(q4) + (-cos(q1) * sin(q3) - sin(q1) * cos(q3)) * L4 * sin(q4))*t_q5 + xOC;
+        yE = ((sin(q1) * cos(q3) + cos(q1) * sin(q3)) * L4 * cos(q4) + (cos(q1) * cos(q3) - sin(q1) * sin(q3)) * L4 * sin(q4))*t_q5 + yOC;
+        zE = L1+q2 * t_q5;
+        
+        [xOE,yOE,zOE]=Donghocthuan(q1,q2,q3,q4);
+        plot3(xE,yE,zE,'y.',xOE,yOE,zOE,'r.')
         grid on
         hold on
     end
-    %diem E 
-%     for t_q5 = 0:0.05:1
-%         xE = ((cos(q1) * cos(q3) - sin(q1) * sin(q3)) * L4 * cos(q4) + (-cos(q1) * sin(q3) - sin(q1) * cos(q3)) * L4 * sin(q4))*t_q5 + xOC;
-%         yE = ((sin(q1) * cos(q3) + cos(q1) * sin(q3)) * L4 * cos(q4) + (cos(q1) * cos(q3) - sin(q1) * sin(q3)) * L4 * sin(q4))*t_q5 + yOC;
-%         zE = L1;
-%         
-%         xOE = xE;
-%         yOE = yE;
-%         zOE = zE;
-%         plot3(xE,yE,zE,'c.',xOE,yOE,zOE,'r.')
-%         grid on
-%         hold on
-%     end
     
    pause(0.05)
        grid on
