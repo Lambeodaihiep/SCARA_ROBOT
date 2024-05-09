@@ -1,0 +1,11 @@
+function [Ed,dEd]=Quydao(t)
+    [L1,L2,L3,L4]=parameter();
+    Ed(1)=L2+30*sin(pi*t);;
+    Ed(2)=L3+L4+30*cos(pi*t);;
+    Ed(3)=L1;
+    
+    dEd(1)=1;
+    dEd(2)=-1;
+    dEd(3)=0;
+
+end
