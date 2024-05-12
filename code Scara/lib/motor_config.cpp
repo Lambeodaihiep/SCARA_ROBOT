@@ -1,8 +1,10 @@
 #include "motor_config.h"
 #include "Arduino.h"
 #include "config.h"
+#include "Servo.h"
 
 AccelStepper stepperA(motorInterfaceType, stepLA, dirLA);
+Servo gripper;
 
 void stepperInit()
 {
@@ -52,8 +54,8 @@ void stepperHoming()
     {
       if (digitalRead(swLimit[i]) != 1) // Nếu động cơ chưa homing xong
       {
-        stepper[i].moveTo(flagHome); // Cho động cơ quay ngược chiều kim đồng hồ
-        stepper[i].move(flagHome);
+        stepper[i].moveTo(-flagHome); // Cho động cơ quay ngược chiều kim đồng hồ
+        stepper[i].move(-flagHome);
         stepper[i].run();
       }
     }
@@ -90,58 +92,77 @@ void stepperHome()
   degToGoA = degHomeA; // đưa robot về giữa
 
   stepperRun();
+
+  // Sau khi home set vị trí ban đầu
+  stepper[0].setCurrentPosition(0);
+  stepper[1].setCurrentPosition(0);
+  stepper[2].setCurrentPosition(-3600);
+  stepperA.setCurrentPosition(0);
+
+  currentDeg[0] = 0;
+  currentDeg[1] = 50;
+  currentDeg[2] = -90;
+  currentDegA = 0;
 }
 
-void readAngle()
+void moveByAngle(float q1, float q2, float q3, float q4)
 {
-  for (int i = 0; i < N; i++)
-  {
-    degToGo[i] = degGo[index];
-    index++;
-    if (index > numDeg)
-    {
-    //   servoHome();
-      while (1);
-    }
-    delay(5);
-  }
+
+    degToGo[0] = q1 - currentDeg[0];
+    degToGo[1] = q2 - currentDeg[1];
+    degToGo[2] = q3 - currentDeg[2];
+    degToGoA = q4 - currentDegA;
+    
+    currentDeg[0] = q1;
+    currentDeg[1] = q2;
+    currentDeg[2] = q3;
+    currentDegA = q4;
+
+    stepperRun();
 }
 
 int servoVal = 0;
 
 void theAccel()
 {
-  accel[0] = MAXACCEL; // cho động cơ 1 mặc định là maxAccel
+  // động cơ nào di chuyển nhiều nhất sẽ có gia tốc lớn nhất
+  MAXSTEP = 0;
+  for (int i = 0; i < N; i++) {
+    if (MAXSTEP < stepToGo[i])
+      MAXSTEP = stepToGo[i];
+  }
+  if (MAXSTEP < stepToGoA)
+    MAXSTEP = stepToGoA;
 
   for (int i = 0; i < N; i++)                        // các động cơ khác nhận giá trị
-  { // tỉ lệ so với động cơ 1
-    accel[i] = (degToGo[i] / degToGo[0]) * accel[0]; // để đảm bảo các động cơ dừng đồng thời
-    // Serial.println(accel[i]);
+  {
+    accel[i] = (stepToGo[i] / MAXSTEP) * MAXACCEL; // để đảm bảo các động cơ dừng đồng thời
   }           
-  accelA = (degToGoA / degToGo[0]) * accel[0];                                       
+  accelA = (stepToGoA / MAXSTEP) * MAXACCEL;                                       
 }
 
 void deg2step()
 {
-  theAccel();
   // đổi từ góc sang bước,
   // chia góc cho 1.8/microStep (vi bước)
   //    stepToGo[i] = degToGo[i] * microStep * ratioPuley / 1.8; // sau đó nhân với tỉ số truyền của bánh răng và dây đai
-  stepToGo[0] = degToGo[0];
-  stepToGo[1] = degToGo[1];
-  stepToGo[2] = degToGo[2];
-  stepToGoA = degToGoA;
+  stepToGo[0] = degToGo[0] * ratioPuley1 * microStep / 1.8;
+  stepToGo[1] = degToGo[1] * ratioPuley2 * microStep / 1.8;
+  stepToGo[2] = degToGo[2] * ratioPuley3 * microStep / 1.8;
+  stepToGoA = degToGoA * ratioPuleyA * microStep / 1.8;
 
-  if (abs(stepToGo[0]) == 3600)
-  {
-    servoVal = abs(stepToGo[0]) / stepToGo[0];
-    Serial.print("servo");
+  theAccel();
 
-    stepToGo[0] = 1;
-    stepToGo[1] = 1;
-    stepToGo[2] = 1;
-    stepToGo[3] = 1;
-  }
+  // if (abs(stepToGo[0]) == 3600)
+  // {
+  //   servoVal = abs(stepToGo[0]) / stepToGo[0];
+  //   Serial.print("servo");
+
+  //   stepToGo[0] = 1;
+  //   stepToGo[1] = 1;
+  //   stepToGo[2] = 1;
+  //   stepToGo[3] = 1;
+  // }
 
   for (int i = 0; i < N; i++)
   {
@@ -169,4 +190,25 @@ void stepperRun()
     stepper[2].run();
     stepperA.run();
   }
+}
+
+void currentPosition()
+{
+  for(int i = 0; i < N; i++)
+    Serial.println(stepper[i].currentPosition());
+
+  Serial.println(stepperA.currentPosition());
+}
+
+void servoInit()
+{
+  gripper.attach(pinServo);
+}
+void openGripper()
+{
+  gripper.write(20);
+}
+void closeGripper()
+{
+  gripper.write(90);
 }

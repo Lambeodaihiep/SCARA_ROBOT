@@ -9,3 +9,6 @@ void readAngle();     // Nhập xuất dữ liệu bằng góc đơn vị độ
 void deg2step();      // Truyền số bước, gia tốc cho động cơ
 void theAccel();      // Tính toán gia tốc cho từng động cơ
 void stepperRun();    // Thực hiện chạy động cơ
+void servoInit();
+void openGipper();
+void closeGripper();
