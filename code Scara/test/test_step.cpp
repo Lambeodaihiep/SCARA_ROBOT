@@ -45,9 +45,9 @@ void setup()
   stepper_Z.setAcceleration(1000);
   stepper_Z.moveTo(800);
 
-  stepper_A.setMaxSpeed(2000);
+  stepper_A.setMaxSpeed(5000);
   stepper_A.setAcceleration(1000);
-  stepper_A.moveTo(1600);
+  stepper_A.moveTo(16000);
 
   pinMode(Z_limit, INPUT_PULLUP);
   pinMode(Y_limit, INPUT_PULLUP);
@@ -57,9 +57,9 @@ void setup()
 
 void loop()
 {
-  stepper_X.run();
-  stepper_Y.run();
-  stepper_Z.run();
+  // stepper_X.run();
+  // stepper_Y.run();
+  // stepper_Z.run();
   stepper_A.run();
   // Serial.print(digitalRead(Z_limit));
   // Serial.print(digitalRead(Y_limit));

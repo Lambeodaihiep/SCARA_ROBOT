@@ -33,7 +33,7 @@ void stepperStart()
 
 void stepperHoming()
 {
-  Serial.println("X, Y, Z plane is homing ...");
+  // Serial.println("X, Y, Z plane is homing ...");
   for (int i = 0; i < N; i++) // Khởi tạo Vận tốc và Gia tốc
   {
     stepper[i].setMaxSpeed(MAXSPEED);
@@ -46,10 +46,10 @@ void stepperHoming()
 
   while (digitalRead(swLimit[0]) == 0 || digitalRead(swLimit[1]) == 0 || digitalRead(swLimit[2]) == 0 || digitalRead(swLimitA) == 0) // chừng nào có 1 trong 4 động cơ chưa về vị trí homing
   { 
-    Serial.print(digitalRead(swLimit[0]));
-    Serial.print(digitalRead(swLimit[1]));
-    Serial.print(digitalRead(swLimit[2]));
-    Serial.println(digitalRead(swLimitA));
+    // Serial.print(digitalRead(swLimit[0]));
+    // Serial.print(digitalRead(swLimit[1]));
+    // Serial.print(digitalRead(swLimit[2]));
+    // Serial.println(digitalRead(swLimitA));
     for (int i = 0; i < N; i++)                                  // for chạy lần lượt từng động cơ
     {
       if (digitalRead(swLimit[i]) != 1) // Nếu động cơ chưa homing xong
@@ -66,7 +66,7 @@ void stepperHoming()
       stepperA.run();
     }
     flagHome++; // tăng giá trị cần quay về
-    delayMicroseconds(1000);
+    delayMicroseconds(800);
   }
 
   for (int i = 0; i < N; i++)
@@ -96,12 +96,12 @@ void stepperHome()
   // Sau khi home set vị trí ban đầu
   stepper[0].setCurrentPosition(0);
   stepper[1].setCurrentPosition(0);
-  stepper[2].setCurrentPosition(-3600);
+  stepper[2].setCurrentPosition(0);
   stepperA.setCurrentPosition(0);
 
   currentDeg[0] = 0;
-  currentDeg[1] = 50;
-  currentDeg[2] = -90;
+  currentDeg[1] = 0;
+  currentDeg[2] = 0;
   currentDegA = 0;
 }
 
@@ -147,7 +147,7 @@ void deg2step()
   // chia góc cho 1.8/microStep (vi bước)
   //    stepToGo[i] = degToGo[i] * microStep * ratioPuley / 1.8; // sau đó nhân với tỉ số truyền của bánh răng và dây đai
   stepToGo[0] = degToGo[0] * ratioPuley1 * microStep / 1.8;
-  stepToGo[1] = degToGo[1] * ratioPuley2 * microStep / 1.8;
+  stepToGo[1] = 9 * degToGo[1] * ratioPuley2 * microStep / 1.8;
   stepToGo[2] = degToGo[2] * ratioPuley3 * microStep / 1.8;
   stepToGoA = degToGoA * ratioPuleyA * microStep / 1.8;
 
@@ -206,7 +206,7 @@ void servoInit()
 }
 void openGripper()
 {
-  gripper.write(20);
+  gripper.write(0);
 }
 void closeGripper()
 {
