@@ -27,8 +27,8 @@ SCARA = SerialLink([H0_1 H1_2 H2_3 H3_E], "name", "SCARA");
 
 init_q = [0 0 0 0];
 Q_real = [];
-% [Ed,dEd]=Quydaoduongthang(200, 100);
-[Ed,dEd]=Quydaoduongtron(0.63*pi, 50, 20);
+[Ed,dEd]=Quydaoduongthang([354 0 69], [250 -100 69], 10);
+% [Ed,dEd]=Quydaoduongtron(0.63*pi, 50, 20);
 plot3(Ed(1,:), Ed(2,:), Ed(3,:), 'r.');
 hold on
 for i = 1:1:length(Ed)

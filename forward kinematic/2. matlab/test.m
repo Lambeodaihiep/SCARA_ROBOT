@@ -1,9 +1,9 @@
 clear
 
-x = serialport('COM8',9600);
+x = serialport('COM4',9600);
 %%fopen(x);
 % 0;0;90;0;1!
-msg1 = "0;0;90;0;1!";
+msg1 = "end!";
 msg2 = "0;0;0;0;1!";
 msg3 = "0;0;-90;0;1!";
 go = true;
