@@ -12,3 +12,4 @@ void stepperRun();    // Thực hiện chạy động cơ
 void servoInit();
 void openGipper();
 void closeGripper();
+void currentPosition();

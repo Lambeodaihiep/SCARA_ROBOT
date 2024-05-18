@@ -17,6 +17,9 @@ void loop()
     stepperStart(); // khởi tạo step
     kt = false;
     
+    moveByAngle(0, 0, 90, 0);
+    delay(1000);
+    moveByAngle(0, 0, -90, 0);
   }
   // for (int i = 0; i < 11; i++)
   //   moveByAngle(q1[i], q2[i], q3[i], q4[i]);

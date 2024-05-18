@@ -1,7 +1,7 @@
 #include "motor_config.h"
 #include "Arduino.h"
 #include "config.h"
-#include "Servo.h"
+#include "ESP32Servo.h"
 
 AccelStepper stepperA(motorInterfaceType, stepLA, dirLA);
 Servo gripper;
@@ -66,7 +66,7 @@ void stepperHoming()
       stepperA.run();
     }
     flagHome++; // tăng giá trị cần quay về
-    delayMicroseconds(800);
+    delayMicroseconds(2000);
   }
 
   for (int i = 0; i < N; i++)
@@ -119,6 +119,7 @@ void moveByAngle(float q1, float q2, float q3, float q4)
     currentDegA = q4;
 
     stepperRun();
+    // currentPosition();
 }
 
 int servoVal = 0;
@@ -128,17 +129,20 @@ void theAccel()
   // động cơ nào di chuyển nhiều nhất sẽ có gia tốc lớn nhất
   MAXSTEP = 0;
   for (int i = 0; i < N; i++) {
-    if (MAXSTEP < stepToGo[i])
+    if (abs(MAXSTEP) < abs(stepToGo[i]))
       MAXSTEP = stepToGo[i];
   }
-  if (MAXSTEP < stepToGoA)
+  if (abs(MAXSTEP) < abs(stepToGoA))
     MAXSTEP = stepToGoA;
-
-  for (int i = 0; i < N; i++)                        // các động cơ khác nhận giá trị
-  {
-    accel[i] = (stepToGo[i] / MAXSTEP) * MAXACCEL; // để đảm bảo các động cơ dừng đồng thời
-  }           
-  accelA = (stepToGoA / MAXSTEP) * MAXACCEL;                                       
+  
+  // Serial.println(MAXSTEP);
+  if (MAXSTEP != 0) {
+    for (int i = 0; i < N; i++)                        // các động cơ khác nhận giá trị
+    {
+      accel[i] = (stepToGo[i] / MAXSTEP) * MAXACCEL; // để đảm bảo các động cơ dừng đồng thời
+    }           
+    accelA = (stepToGoA / MAXSTEP) * MAXACCEL;     
+  }                                  
 }
 
 void deg2step()
@@ -150,6 +154,11 @@ void deg2step()
   stepToGo[1] = 9 * degToGo[1] * ratioPuley2 * microStep / 1.8;
   stepToGo[2] = degToGo[2] * ratioPuley3 * microStep / 1.8;
   stepToGoA = degToGoA * ratioPuleyA * microStep / 1.8;
+
+  // Serial.println(stepToGo[0]);
+  // Serial.println(stepToGo[1]);
+  // Serial.println(stepToGo[2]);
+  // Serial.println(stepToGoA);
 
   theAccel();
 

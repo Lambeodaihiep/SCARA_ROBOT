@@ -9,14 +9,14 @@
 #define swLimit1 36
 
 //------------ STEP 2 - Z ------------
-#define stepL2 33    // dây động cơ bên phải
-#define dirL2 14     // dây động cơ bên phải
-#define swLimit2 39
+#define stepL2 25    // dây động cơ bên phải
+#define dirL2 12     // dây động cơ bên phải
+#define swLimit2 34
 
 //------------ STEP 3 - Y ------------
-#define stepL3 25    // dây động cơ bên phải
-#define dirL3 12     // dây động cơ bên phải
-#define swLimit3 34
+#define stepL3 33    // dây động cơ bên phải
+#define dirL3 14     // dây động cơ bên phải
+#define swLimit3 39
 
 //------------ STEP 4 - A ------------
 #define stepLA 26    // dây động cơ bên phải
@@ -25,13 +25,11 @@
 
 const int step[N] = {stepL1, stepL2, stepL3};        // list chân step
 const int dir[N] = {dirL1, dirL2, dirL3};           // list chân dir
-const int swLimit[N] = {swLimit2, swLimit3, swLimit1}; // list công tắc hành trình
+const int swLimit[N] = {swLimit1, swLimit2, swLimit3}; // list công tắc hành trình
 int accel[N], accelA;                                // Gia tốc của động cơ
 float degToGo[N], degToGoA, currentDeg[N], currentDegA; 
 
-#define numDeg 101
-
-#define en 8 // chân en động cơ, LOW chạy HIGH tắt
+#define en 15 // chân en động cơ, LOW chạy HIGH tắt
 
 //------------ Phần cứng ------------
 #define microStep 16   // Vi bước sử dụng
@@ -45,13 +43,13 @@ float degToGo[N], degToGoA, currentDeg[N], currentDegA;
 #define MAXACCEL 2000  // Gia tốc lớn nhất động cơ có thể đạt được
 
 long stepToGo[N], stepToGoA, MAXSTEP;                            // Số bước cần di chuyển
-#define degHome1 120                           // số góc từ công tắc hành trình về giữa
-#define degHome2 0                          // số góc từ công tắc hành trình về giữa
+#define degHome1 151                           // số góc từ công tắc hành trình về giữa
+#define degHome2 0                        // số góc từ công tắc hành trình về giữa
 #define degHome3 143.5
-#define degHomeA -92                        // số góc từ công tắc hành trình về giữa
+#define degHomeA -94                        // số góc từ công tắc hành trình về giữa
 // #define degHome3 -94* microStep * ratioPuley3 / 1.8                           // số góc từ công tắc hành trình về giữa
 
 //-------------------------------- RC SERVO --------------------------------
 
 //------------ SERVO ------------
-#define pinServo A0 // dây số 7
+#define pinServo 2 // dây số 7

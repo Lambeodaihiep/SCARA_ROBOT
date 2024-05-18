@@ -6,7 +6,7 @@
 //------------ STEP 1 - X ------------
 #define stepL1 2    // dây động cơ bên trái
 #define dirL1 5     // dây động cơ bên trái
-#define swLimit1 9
+#define swLimit1 
 
 //------------ STEP 2 - Z ------------
 #define stepL2 4    // dây động cơ bên phải
@@ -41,8 +41,8 @@ float degToGo[N], degToGoA, currentDeg[N], currentDegA;
 #define ratioPuleyA 4
 
 //------------ Tốc độ ------------
-#define MAXSPEED 5000 // Vận tốc lớn nhất động cơ có thể đạt được
-#define MAXACCEL 1000  // Gia tốc lớn nhất động cơ có thể đạt được
+#define MAXSPEED 10000 // Vận tốc lớn nhất động cơ có thể đạt được
+#define MAXACCEL 2000  // Gia tốc lớn nhất động cơ có thể đạt được
 
 long stepToGo[N], stepToGoA, MAXSTEP;                            // Số bước cần di chuyển
 #define degHome1 120                           // số góc từ công tắc hành trình về giữa

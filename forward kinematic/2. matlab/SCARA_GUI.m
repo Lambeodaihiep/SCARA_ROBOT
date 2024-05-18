@@ -22,7 +22,7 @@ function varargout = SCARA_GUI(varargin)
 
 % Edit the above text to modify the response to help SCARA_GUI
 
-% Last Modified by GUIDE v2.5 15-May-2024 18:30:20
+% Last Modified by GUIDE v2.5 19-May-2024 00:07:59
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -333,6 +333,8 @@ function move_robot_Callback(hObject, eventdata, handles)
     msg = handles.q_1.String + ";" + handles.q_2.String + ";" + handles.q_3.String + ";" + handles.q_4.String + ";" + handles.gripper.String + ";!";
     global x;
     fprintf(x,msg,"string");
+    msg = "end!";
+    fprintf(x,msg,"string");
 
 
 % --- Executes on button press in connect.
@@ -341,7 +343,7 @@ function conenct_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     global x;
-    x=serialport('COM8', 9600);
+    x=serialport('COM4', 9600);
 
 
 
@@ -522,22 +524,21 @@ function Start_line_Callback(hObject, eventdata, handles)
     plot3(Ed(1,:), Ed(2,:), Ed(3,:), 'r.');
     hold on
     for i = 1:1:length(Ed)
-        obj = transl(Ed(:,i)) *...
-        rpy2tr(0, 0, 0);
-        q = SCARA.ikine(obj, [init_q 1 0], 'mask', [1 1 1 1 0 0]) * 180/pi;
+        obj = transl(Ed(:,i)) * rpy2tr(0, 0, 0);
+        q = SCARA.ikine(obj, [init_q 0 0], 'mask', [1 1 1 1 0 0]) * 180/pi;
         init_q = q;
         handles.q_1.String = num2str(round(q(1),2));
         handles.q_2.String = num2str(round(Ed(3,i)-L1,2));
         handles.q_3.String = num2str(round(q(3),2));
         handles.q_4.String = num2str(round(q(4),2));
         SCARA.plot(q*pi/180);
-        Q_real(1,end+1) = q(1);
-        Q_real(2,end) = q(2);
-        Q_real(3,end) = q(3);
-        Q_real(4,end) = q(4);
+        Q_real(1,end+1) = round(q(1),2);
+        Q_real(2,end) = round(Ed(3,i)-L1,2);
+        Q_real(3,end) = round(q(3),2);
+        Q_real(4,end) = round(q(4),2);
     end
-    length(Q_real)
-%     Q_real
+%     length(Q_real)
+%     Q_real;
     for i = 1:1:length(Q_real)
         msg = Q_real(1,i) + ";" + Q_real(2,i) + ";" + Q_real(3,i) + ";" + Q_real(4,i) + ";" + handles.gripper.String + ";!";
         fprintf(x,msg,"string");
@@ -557,6 +558,181 @@ function Step_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function Step_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to Step (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function CenterX_Callback(hObject, eventdata, handles)
+% hObject    handle to CenterX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of CenterX as text
+%        str2double(get(hObject,'String')) returns contents of CenterX as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function CenterX_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to CenterX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function CenterY_Callback(hObject, eventdata, handles)
+% hObject    handle to CenterY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of CenterY as text
+%        str2double(get(hObject,'String')) returns contents of CenterY as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function CenterY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to CenterY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function Radius_Callback(hObject, eventdata, handles)
+% hObject    handle to Radius (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Radius as text
+%        str2double(get(hObject,'String')) returns contents of Radius as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function Radius_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Radius (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in Start_circle.
+function Start_circle_Callback(hObject, eventdata, handles)
+% hObject    handle to Start_circle (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    cla;
+    [L1, L2, L3, L4] = parameter();
+    
+    H0_1 = Link([0, 0, 0, 0, 0, 0]);
+    H0_1.qlim = [-5*pi/6 5*pi/6];
+    
+    H1_2 = Link([0, 0, L2, 0, 1, L1]);
+    H1_2.qlim = [0 200];
+    
+    H2_3 = Link([0, 0, L3, 0, 0, 0]);
+    H2_3.qlim = [-5*pi/6 5*pi/6];
+    
+    H3_E = Link([0, 0, L4, 0, 0, 0]);
+    H3_E.qlim = [-pi/2 pi/2];
+    
+    SCARA = SerialLink([H0_1 H1_2 H2_3 H3_E], "name", "SCARA");
+
+    CenterX = str2double(handles.CenterX.String);
+    CenterY = str2double(handles.CenterY.String);
+
+    Radius = str2double(handles.Radius.String);
+    Height = str2double(handles.Height.String);
+
+    Step = str2double(handles.Step_circle.String);
+
+    [Ed,~]=Quydaoduongtron([CenterX CenterY], Radius, Height, Step);
+    
+    global x;
+    Q_real = [];
+    init_q = [0 0 0 0];
+    plot3(Ed(1,:), Ed(2,:), Ed(3,:), 'r.');
+    hold on
+    for i = 1:1:length(Ed)
+        obj = transl(Ed(:,i)) * rpy2tr(0, 0, 1);
+        q = SCARA.ikine(obj, [init_q 0 0], 'mask', [1 1 1 1 0 0]) * 180/pi;
+        init_q = q;
+        handles.q_1.String = num2str(round(q(1),2));
+        handles.q_2.String = num2str(round(Ed(3,i)-L1,2));
+        handles.q_3.String = num2str(round(q(3),2));
+        handles.q_4.String = num2str(round(q(4),2));
+        SCARA.plot(q*pi/180);
+        Q_real(1,end+1) = round(q(1),2);
+        Q_real(2,end) = round(Ed(3,i)-L1,2);
+        Q_real(3,end) = round(q(3),2);
+        Q_real(4,end) = round(q(4),2);
+    end
+%     length(Q_real)
+%     Q_real;
+    for i = 1:1:length(Q_real)
+        msg = Q_real(1,i) + ";" + Q_real(2,i) + ";" + Q_real(3,i) + ";" + Q_real(4,i) + ";" + handles.gripper.String + ";!";
+        fprintf(x,msg,"string");
+    end
+    msg = "end!";
+    fprintf(x,msg,"string");
+
+
+function Step_circle_Callback(hObject, eventdata, handles)
+% hObject    handle to Step_circle (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Step_circle as text
+%        str2double(get(hObject,'String')) returns contents of Step_circle as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function Step_circle_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Step_circle (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function Height_Callback(hObject, eventdata, handles)
+% hObject    handle to Height (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Height as text
+%        str2double(get(hObject,'String')) returns contents of Height as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function Height_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Height (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

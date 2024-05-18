@@ -1,64 +1,69 @@
 #include <Arduino.h>
-#include "../lib/motor_config.cpp"
+// #include <AccelStepper.h>
 
-void setup() // chỉ chạy 1 lần duy nhất
+// defines pins numbers
+
+// const int stepX = 2;
+// const int dirX = 5;
+
+// const int stepY = 3;
+// const int dirY = 6;
+
+// const int stepZ = 4;
+// const int dirZ = 7;
+
+// const int stepA = 12;
+// const int dirA = 13;
+
+// const int enPin = 8;
+
+// const int Z_limit = 11;
+// const int Y_limit = 10;
+// const int X_limit = 9;
+// const int A_limit = A3;
+
+// AccelStepper stepper_X(1, stepX, dirX);
+// AccelStepper stepper_Y(1, stepY, dirY);
+// AccelStepper stepper_Z(1, stepZ, dirZ);
+// AccelStepper stepper_A(1, stepA, dirA);
+
+void setup()
 {
-  Serial.begin(9600); // khai báo sử dụng serial cổng 115200
-  stepperInit(); // khai báo step
-  servoInit();
-  closeGripper();
+//   Serial.begin(115200);
+//   pinMode(enPin, OUTPUT);
+//   digitalWrite(enPin, LOW);
+
+//   stepper_X.setMaxSpeed(2000);
+//   stepper_X.setAcceleration(1000);
+//   stepper_X.moveTo(800);
+
+//   stepper_Y.setMaxSpeed(2000);
+//   stepper_Y.setAcceleration(1000);
+//   stepper_Y.moveTo(800);
+
+//   stepper_Z.setMaxSpeed(5000);
+//   stepper_Z.setAcceleration(1000);
+//   stepper_Z.moveTo(800);
+
+//   stepper_A.setMaxSpeed(5000);
+//   stepper_A.setAcceleration(1000);
+//   stepper_A.moveTo(800);
+
+//   pinMode(Z_limit, INPUT_PULLUP);
+//   pinMode(Y_limit, INPUT_PULLUP);
+//   pinMode(X_limit, INPUT_PULLUP);
+//   pinMode(A_limit, INPUT_PULLUP);
 }
 
-char Buffer[27] = {};
-String msg = "";
-
-int kt = true; // biến kiểm tra
 void loop()
 {
-  if (kt) // các hàm trong này chỉ thực hiện một lần duy nhất trong loop
-  {
-    stepperStart(); // khởi tạo step
-
-    moveByAngle(0, 0, 90, 0);
-    delay(1000);
-    moveByAngle(0, 0, -90, 0);
-    // delay(1000);
-    // moveByAngle(0, 10, -90, 0);
-    // delay(2000);
-    // moveByAngle(0, 20, -90, 0);
-    // delay(2000);
-    // moveByAngle(0, 30, -90, 0);
-    // delay(2000);
-    kt = false;
-  }
-
-  if(Serial.available() > 0) {
-    Serial.readBytesUntil('!', Buffer, 27);
-    msg = String(Buffer);
-    Serial.print(msg);
-    
-    String q1 = msg.substring(0, msg.indexOf(";"));
-    String temp = msg.substring(msg.indexOf(";")+1, msg.length());
-    String q2 = temp.substring(0, temp.indexOf(";"));
-    temp = temp.substring(temp.indexOf(";")+1, temp.length());
-    String q3 = temp.substring(0, temp.indexOf(";"));
-    temp = temp.substring(temp.indexOf(";")+1, temp.length());
-    String q4 = temp.substring(0, temp.indexOf(";"));
-    String servo = temp.substring(temp.indexOf(";")+1, temp.length());
-
-    moveByAngle(q1.toInt(), q2.toInt(), q3.toInt(), q4.toInt());
-    if(servo.toInt() == 1)
-      closeGripper();
-    else openGripper();
-  }
-
-  
-  // for (int i = 0; i < 11; i++)
-  //   moveByAngle(q1[i], q2[i], q3[i], q4[i]);
-  // // stepperRun(); // chạy các giá trị vừa nhập
-
-  // for (int i = 10; i >= 0; i--)
-  //   moveByAngle(q1[i], q2[i], q3[i], q4[i]);
-  
-  
+  // stepper_X.run();
+  // stepper_Y.run();
+  // stepper_Z.run();
+  // stepper_A.run();
+  // Serial.print(digitalRead(Z_limit));
+  // Serial.print(digitalRead(Y_limit));
+  // Serial.print(digitalRead(X_limit));
+  // Serial.print(digitalRead(A_limit));
+  // delay(500);
 }

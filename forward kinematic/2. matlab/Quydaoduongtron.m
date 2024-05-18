@@ -1,11 +1,10 @@
-function [Ed,dEd]=Quydaoduongtron(t, scale, radius)
+function [Ed,dEd]=Quydaoduongtron(center, radius, height, step)
     Ed = [];
     dEd = [];
-    [L1,L2,L3,L4]=parameter();
-    for i = 0:t/scale:t
-        Ed(1, end+1)=L2+(L3+L4)/2+radius*sin(pi*i);
-        Ed(2, end)=L4+radius*cos(pi*i);
-        Ed(3, end)=L1;
+    for i = 0:0.63*pi/step:0.63*pi
+        Ed(1, end+1)=center(1) + radius*sin(pi*i);
+        Ed(2, end)=center(2) + radius*cos(pi*i);
+        Ed(3, end)=height;
         
         dEd(1, end+1)=radius*pi*cos(pi*i);
         dEd(2, end)=-radius*pi*sin(pi*i);
